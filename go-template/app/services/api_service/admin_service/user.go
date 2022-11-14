@@ -8,17 +8,17 @@ import (
 )
 
 // QueryUserService 查询用户是否存在
-func QueryUserService(username, password string) (bool, error) {
-	var user db_model.User
+func QueryUserService(username, password string) (*db_model.User, error) {
+	var user *db_model.User
 	result := g.DB.Where(&db_model.User{Username: username, Password: password}).First(&user)
 	if result.Error != nil {
 		// not found
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
-			return false, nil
+			return nil, nil
 		}
-		return false, result.Error
+		return nil, result.Error
 	}
-	return true, nil
+	return user, nil
 }
 
 // InsertUserService 插入用户

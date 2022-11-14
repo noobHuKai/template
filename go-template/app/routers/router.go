@@ -10,7 +10,10 @@ func InitRouter() *gin.Engine {
 	r := gin.New()
 
 	// middleware
+	// log
 	r.Use(middlewares.LoggerConfigMiddleware())
+	// cors
+	r.Use(middlewares.CORSMiddleware())
 
 	apiGroup := r.Group("/api")
 	{

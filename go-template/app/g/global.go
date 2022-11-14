@@ -1,6 +1,7 @@
 package g
 
 import (
+	"github.com/go-redis/redis/v9"
 	"github.com/noobHuKai/app/models/config_model"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
@@ -11,4 +12,5 @@ var (
 	Logger    *zap.Logger
 	JWTSecret []byte
 	DB        *gorm.DB
+	RDB       *redis.Client
 )

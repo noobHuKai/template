@@ -9,13 +9,13 @@ import (
 	"github.com/pkg/errors"
 )
 
-func CreateToken(username string) string {
+func CreateToken(uid uint, duration time.Duration) string {
 	claim := request.Claims{
-		Username: username,
+		UID: uid,
 		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(3 * time.Hour * time.Duration(1))), // 过期时间3小时
-			IssuedAt:  jwt.NewNumericDate(time.Now()),                                       // 签发时间
-			NotBefore: jwt.NewNumericDate(time.Now()),                                       // 生效时间
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(duration)), // 过期时间
+			IssuedAt:  jwt.NewNumericDate(time.Now()),               // 签发时间
+			NotBefore: jwt.NewNumericDate(time.Now()),               // 生效时间
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claim) // 使用HS256算法
@@ -26,8 +26,8 @@ func CreateToken(username string) string {
 	return tokenString
 }
 
-func ParseToken(tokenss string) (*request.Claims, error) {
-	token, err := jwt.ParseWithClaims(tokenss, &request.Claims{}, jwtSecret())
+func ParseToken(tokens string) (*request.Claims, error) {
+	token, err := jwt.ParseWithClaims(tokens, &request.Claims{}, jwtSecret())
 	if err != nil {
 		if ve, ok := err.(*jwt.ValidationError); ok {
 			if ve.Errors&jwt.ValidationErrorMalformed != 0 {

@@ -60,7 +60,7 @@ func initDatabaseData() {
 		Status:   0,
 		Role:     "user",
 	}
-	g.DB.FirstOrCreate(&root)
-	g.DB.FirstOrCreate(&admin)
-	g.DB.FirstOrCreate(&noob)
+	g.DB.Where(&db_model.User{Username: root.Username, Password: root.Password}).FirstOrCreate(&root)
+	g.DB.Where(&db_model.User{Username: admin.Username, Password: admin.Password}).FirstOrCreate(&admin)
+	g.DB.Where(&db_model.User{Username: noob.Username, Password: noob.Password}).FirstOrCreate(&noob)
 }
