@@ -1,4 +1,12 @@
 basePath: /api
+definitions:
+  request_model.AdminUserLoginReq:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
 host: localhost:8000
 info:
   contact:
@@ -12,11 +20,18 @@ info:
   title: Golang Template API
   version: "1.0"
 paths:
-  /example/helloworld:
-    get:
+  /api/admin/login:
+    post:
       consumes:
       - application/json
-      description: do ping
+      description: Administrator Login
+      parameters:
+      - description: login
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/request_model.AdminUserLoginReq'
       produces:
       - application/json
       responses:
@@ -24,7 +39,7 @@ paths:
           description: OK
           schema:
             type: string
-      summary: ping example
+      summary: Login
       tags:
-      - example
+      - admin
 swagger: "2.0"

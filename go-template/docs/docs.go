@@ -24,9 +24,9 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/example/helloworld": {
-            "get": {
-                "description": "do ping",
+        "/api/admin/login": {
+            "post": {
+                "description": "Administrator Login",
                 "consumes": [
                     "application/json"
                 ],
@@ -34,9 +34,20 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "example"
+                    "admin"
                 ],
-                "summary": "ping example",
+                "summary": "Login",
+                "parameters": [
+                    {
+                        "description": "login",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request_model.AdminUserLoginReq"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -44,6 +55,19 @@ const docTemplate = `{
                             "type": "string"
                         }
                     }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "request_model.AdminUserLoginReq": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
                 }
             }
         }

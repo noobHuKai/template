@@ -7,7 +7,7 @@ secret = "ssss"
 [database]
 type = "postgres"
 host = "localhost"
-user = "postgres"
+user = "noob"
 password = "admin"
 dbname = "postgres"
 port = 5432

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/noobHuKai/internal/boot"
+	"github.com/noobHuKai/app/boot"
 )
 
 // @title           Golang Template API

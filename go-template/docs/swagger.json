@@ -17,9 +17,9 @@
     "host": "localhost:8000",
     "basePath": "/api",
     "paths": {
-        "/example/helloworld": {
-            "get": {
-                "description": "do ping",
+        "/api/admin/login": {
+            "post": {
+                "description": "Administrator Login",
                 "consumes": [
                     "application/json"
                 ],
@@ -27,9 +27,20 @@
                     "application/json"
                 ],
                 "tags": [
-                    "example"
+                    "admin"
                 ],
-                "summary": "ping example",
+                "summary": "Login",
+                "parameters": [
+                    {
+                        "description": "login",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request_model.AdminUserLoginReq"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -37,6 +48,19 @@
                             "type": "string"
                         }
                     }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "request_model.AdminUserLoginReq": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
                 }
             }
         }
