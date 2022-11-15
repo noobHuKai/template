@@ -2,6 +2,7 @@ package initialize
 
 import (
 	"context"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/noobHuKai/app/g"
 	"net/http"
@@ -32,7 +33,7 @@ func RunServer() {
 	go func() {
 		// service connections
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			g.Logger.Info("listen: %s\n", err)
+			g.Logger.Info(fmt.Sprintf("listen: %s\n", err))
 		}
 	}()
 
@@ -45,11 +46,18 @@ func RunServer() {
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
 	g.Logger.Info("Shutdown Server ...")
+	{
+		// database close
+		db, _ := g.DB.DB()
+		db.Close()
+		// redis close
+		g.RDB.Close()
+	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	if err := srv.Shutdown(ctx); err != nil {
-		g.Logger.Info("Server Shutdown:", err)
+		g.Logger.Info(fmt.Sprintf("Server Shutdown: %s", err.Error()))
 	}
 	// catching ctx.Done(). timeout of 5 seconds.
 	select {
