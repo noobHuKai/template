@@ -7,9 +7,9 @@ secret = "ssss"
 [database]
 type = "postgres"
 host = "localhost"
-user = "postgres"
+user = "noob"
 password = "admin"
-dbname = "postgres"
+dbname = "template"
 port = 5432
 
 [redis]

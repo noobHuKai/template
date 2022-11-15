@@ -7,8 +7,8 @@ import (
 	"time"
 )
 
-// GetLogWriter 日志文件切割
-func GetLogWriter(filename, linkname string) io.Writer {
+// GetRotateLogWriter 获取日志文件切割 writer
+func GetRotateLogWriter(filename, linkname string) io.Writer {
 	// 保存日志3天，每24小时分割一次日志
 	hook, err := rotatelogs.New(
 		filename,

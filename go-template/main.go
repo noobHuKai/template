@@ -1,10 +1,10 @@
 package main
 
 import (
-	"github.com/noobHuKai/app/boot"
+	"github.com/noobHuKai/app/initialize"
 )
 
 func main() {
-	boot.InitServer()
-	boot.RunServer()
+	initialize.InitServer()
+	initialize.RunServer()
 }

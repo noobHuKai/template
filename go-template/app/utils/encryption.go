@@ -2,11 +2,11 @@ package utils
 
 import (
 	"crypto/md5"
-	"fmt"
+	"encoding/hex"
 )
 
-func MD5Encrypt(data string) string {
-	has := md5.Sum([]byte(data))
-	md5str := fmt.Sprintf("%x", has)
-	return md5str
+func MD5Encrypt(data []byte, b ...byte) string {
+	h := md5.New()
+	h.Write(data)
+	return hex.EncodeToString(h.Sum(b))
 }

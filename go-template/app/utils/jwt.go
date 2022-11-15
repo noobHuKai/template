@@ -2,7 +2,7 @@ package utils
 
 import (
 	"github.com/noobHuKai/app/g"
-	request "github.com/noobHuKai/app/models/request_model"
+	"github.com/noobHuKai/app/model/common/request"
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
