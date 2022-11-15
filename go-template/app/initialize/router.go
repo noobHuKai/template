@@ -19,18 +19,15 @@ func initRouter() *gin.Engine {
 	// router
 	systemRouter := router.RouterGroupApp.System
 
-	publicGroup := r.Group("")
-	{
-		// 健康监测
-		publicGroup.GET("/health", func(c *gin.Context) {
-			c.JSON(200, "ok")
-		})
-	}
+	systemRouterGroup := r.Group("system")
 
-	privateGroup := r.Group("")
 	{
 		// user
-		systemRouter.InitUserRouter(privateGroup)
+		systemRouter.InitUserRouter(systemRouterGroup)
+	}
+	// private router
+	{
+		//
 	}
 
 	return r

@@ -5,13 +5,15 @@ import (
 	"github.com/noobHuKai/app/g"
 	"github.com/noobHuKai/app/model/common/response"
 	systemReq "github.com/noobHuKai/app/model/system/request"
+	systemRes "github.com/noobHuKai/app/model/system/response"
+
 	uuid "github.com/satori/go.uuid"
 	"time"
 )
 
 type UserApi struct{}
 
-func (u *UserApi) Login(c *gin.Context) {
+func (u *UserApi) AdminLogin(c *gin.Context) {
 	var req systemReq.LoginReq
 	if err := c.BindJSON(&req); err != nil {
 		g.Logger.Error(err.Error())
@@ -24,7 +26,11 @@ func (u *UserApi) Login(c *gin.Context) {
 		response.FailWithMessage(c, err.Error())
 		return
 	}
+	// generate token
 	token := uuid.NewV4().String()
-	g.RDB.Set(ctx, token, userInter.UUID, time.Hour*7)
-	response.Ok(c)
+	// set redis
+	g.RDB.Set(ctx, token, userInter.ID, time.Hour*7)
+	// response
+	res := systemRes.LoginResponse{Token: token}
+	response.OkWithData(c, res)
 }
