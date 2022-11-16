@@ -14,13 +14,13 @@ func TokenAuthorizeMiddleware() gin.HandlerFunc {
 		// get token
 		token := c.Request.Header.Get("Authorization")
 		if token == "" {
-			response.FailWithMessage(c, "Not Found Token")
+			response.AuthorizedFailWithMsg(c, "Not Found Token")
 			return
 		}
 		uid, err := g.RDB.Get(ctx, token).Result()
 		if err != nil {
 			g.Logger.Error(err.Error())
-			response.FailWithMessage(c, "token is expired")
+			response.AuthorizedFailWithMsg(c, "token is expired")
 			return
 		}
 
