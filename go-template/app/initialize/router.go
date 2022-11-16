@@ -17,17 +17,10 @@ func initRouter() *gin.Engine {
 	r.Use(middleware.CORSMiddleware())
 
 	// router
-	systemRouter := router.RouterGroupApp.System
-
-	systemRouterGroup := r.Group("system")
-
+	apiRouter := router.RouterGroupApp
+	apiRouterGroup := r.Group("api")
 	{
-		// user
-		systemRouter.InitUserRouter(systemRouterGroup)
-	}
-	// private router
-	{
-		//
+		apiRouter.InitApiRouter(apiRouterGroup)
 	}
 
 	return r

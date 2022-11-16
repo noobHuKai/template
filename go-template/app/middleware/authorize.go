@@ -2,11 +2,12 @@ package middleware
 
 import (
 	"context"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/noobHuKai/app/g"
 	"github.com/noobHuKai/app/model/common/response"
 )
+
+var ctx = context.Background()
 
 func TokenAuthorizeMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -16,14 +17,23 @@ func TokenAuthorizeMiddleware() gin.HandlerFunc {
 			response.FailWithMessage(c, "Not Found Token")
 			return
 		}
-		result, err := g.RDB.Get(context.Background(), token).Result()
+		uid, err := g.RDB.Get(ctx, token).Result()
 		if err != nil {
 			g.Logger.Error(err.Error())
-			response.FailWithMessage(c, "Error Token")
+			response.FailWithMessage(c, "token is expired")
 			return
 		}
-		fmt.Println(result)
-		//c.Set("claims", claims)
+
+		RefreshToken(token)
+
+		c.Set("uid", uid)
 		c.Next()
+	}
+}
+
+func RefreshToken(token string) {
+	duration := g.RDB.TTL(ctx, token).Val()
+	if duration.Minutes() < g.TimeRefreshToken {
+		g.RDB.Expire(ctx, token, g.TimeExpireToken)
 	}
 }
