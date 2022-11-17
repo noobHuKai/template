@@ -41,8 +41,7 @@ const apis: MockMethod[] = [
           code: 200,
           message: 'ok',
           data: {
-            token: findItem.token,
-            refreshToken: findItem.refreshToken
+            token: findItem.token
           }
         };
       }
@@ -111,8 +110,7 @@ const apis: MockMethod[] = [
           code: 200,
           message: 'ok',
           data: {
-            token: findItem.token,
-            refreshToken: findItem.refreshToken
+            token: findItem.token
           }
         };
       }

@@ -64,7 +64,6 @@ export default class CustomAxiosInstance {
         if (status === 200 || status < 300 || status === 304) {
           const backend = response.data;
           const { codeKey, dataKey, successCode } = this.backendConfig;
-          console.log(codeKey, dataKey, successCode )
           // 请求成功
           if (backend[codeKey] === successCode) {
             return handleServiceResult(null, backend[dataKey]);
@@ -72,12 +71,12 @@ export default class CustomAxiosInstance {
 
           // token失效, 刷新token
           if (REFRESH_TOKEN_CODE.includes(backend[codeKey])) {
-            const config = await handleRefreshToken(response.config);
-            if (config) {
-              return this.instance.request(config);
-            }
+            await handleRefreshToken(response.config);
+            // const config = await handleRefreshToken(response.config);
+            // if (config) {
+            //   return this.instance.request(config);
+            // }
           }
-
           const error = handleBackendError(backend, this.backendConfig);
           return handleServiceResult(error, null);
         }

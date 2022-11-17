@@ -1,6 +1,6 @@
-import { unref } from 'vue';
+// import { unref } from 'vue';
 import { defineStore } from 'pinia';
-import { router } from '@/router';
+// import { router } from '@/router';
 import { fetchLogin, fetchUserInfo } from '@/service';
 import { useRouterPush } from '@/composables';
 import { localStg } from '@/utils';
@@ -32,11 +32,12 @@ export const useAuthStore = defineStore('auth-store', {
   },
   actions: {
     /** 重置auth状态 */
+    /** 不是双 token ，是 redis+token */
     resetAuthStore() {
       const { toLogin } = useRouterPush(false);
       const { resetTabStore } = useTabStore();
       const { resetRouteStore } = useRouteStore();
-      const route = unref(router.currentRoute);
+      // const route = unref(router.currentRoute);
 
       clearAuthStorage();
       this.$reset();
@@ -44,16 +45,15 @@ export const useAuthStore = defineStore('auth-store', {
       resetTabStore();
       resetRouteStore();
 
-      if (route.meta.requiresAuth) {
-        toLogin();
-      }
+      // if (route.meta.requiresAuth) {
+      toLogin();
+      // }
     },
     /**
      * 处理登录后成功或失败的逻辑
      * @param backendToken - 返回的token
      */
     async handleActionAfterLogin(backendToken: ApiAuth.Token) {
-      console.log(backendToken)
       const { toLoginRedirect } = useRouterPush(false);
 
       const loginSuccess = await this.loginByToken(backendToken);
@@ -110,7 +110,6 @@ export const useAuthStore = defineStore('auth-store', {
     async login(userName: string, password: string) {
       this.loginLoading = true;
       const { data } = await fetchLogin(userName, MD5Encrypt(password));
-      console.log(data)
       if (data) {
         await this.handleActionAfterLogin(data);
       }

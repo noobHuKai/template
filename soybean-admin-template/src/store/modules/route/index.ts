@@ -112,7 +112,7 @@ export const useRouteStore = defineStore('route-store', {
         throw new Error('userId 不能为空!');
       }
 
-      const { data } = await fetchUserRoutes(userId);
+      const { data } = await fetchUserRoutes();
       if (data) {
         this.routeHomeName = data.home;
         this.handleUpdateRootRedirect(data.home);

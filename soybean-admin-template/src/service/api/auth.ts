@@ -27,7 +27,7 @@ export function fetchUserInfo() {
  * 获取用户路由数据
  * @description 后端根据用户id查询到对应的角色类型，并将路由筛选出对应角色的路由数据返回前端(token)
  */
-export function fetchUserRoutes(userId: string) {
+export function fetchUserRoutes() {
   return request.get<ApiRoute.Route>('/user/routes');
 }
 

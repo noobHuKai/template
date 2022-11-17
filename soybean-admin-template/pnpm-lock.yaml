@@ -40,7 +40,6 @@ specifiers:
   eslint-config-soybeanjs-vue: ^0.1.2
   esno: ^0.16.3
   form-data: ^4.0.0
-  husky: ^8.0.2
   lodash-es: ^4.17.21
   mockjs: ^1.1.0
   naive-ui: 2.33.5
@@ -127,7 +126,6 @@ devDependencies:
   eslint: 8.27.0
   eslint-config-soybeanjs-vue: 0.1.2_rmayb2veg2btbq6mbmnyivgasy
   esno: 0.16.3
-  husky: 8.0.2
   mockjs: 1.1.0_3y7clh66jsbznbjsqlxuh6722u
   npm-check-updates: 16.4.1
   rimraf: 3.0.2
@@ -1640,7 +1638,7 @@ packages:
       cosmiconfig-typescript-loader: 4.2.0_qoh33be55smklb2oyrgdyddh4a
       lodash: 4.17.21
       resolve-from: 5.0.0
-      ts-node: 10.9.1_cbe7ovvae6zqfnmtgctpgpys54
+      ts-node: 10.9.1_kluoused5zacjtflizwvdqgpom
       typescript: 4.9.3
     transitivePeerDependencies:
       - '@swc/core'
@@ -4017,7 +4015,7 @@ packages:
     dependencies:
       '@types/node': 14.18.33
       cosmiconfig: 7.1.0
-      ts-node: 10.9.1_cbe7ovvae6zqfnmtgctpgpys54
+      ts-node: 10.9.1_kluoused5zacjtflizwvdqgpom
       typescript: 4.9.3
     dev: true
 
@@ -6415,12 +6413,6 @@ packages:
     resolution: {integrity: sha512-Fl70vYtsAFb/C06PTS9dZBo7ihau+Tu/DNCk/OyHhea07S+aeMWpFFkUaXRa8fI+ScZbEI8dfSxwY7gxZ9SAVQ==}
     dependencies:
       ms: 2.1.3
-    dev: true
-
-  /husky/8.0.2:
-    resolution: {integrity: sha512-Tkv80jtvbnkK3mYWxPZePGFpQ/tT3HNSs/sasF9P2YfkMezDl3ON37YN6jUUI4eTg5LcyVynlb6r4eyvOmspvg==}
-    engines: {node: '>=14'}
-    hasBin: true
     dev: true
 
   /iconv-lite/0.4.24:
@@ -10248,7 +10240,7 @@ packages:
     resolution: {integrity: sha512-rvuRbTarPXmMb79SmzEp8aqXNKcK+y0XaB298IXueQ8I2PsrATcPBCSPyK/dDNa2iWOhKlfNnOjdAOTBU/nkFA==}
     dev: true
 
-  /ts-node/10.9.1_cbe7ovvae6zqfnmtgctpgpys54:
+  /ts-node/10.9.1_kluoused5zacjtflizwvdqgpom:
     resolution: {integrity: sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==}
     hasBin: true
     peerDependencies:
@@ -10267,14 +10259,14 @@ packages:
       '@tsconfig/node12': 1.0.11
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.3
-      '@types/node': 18.11.9
+      '@types/node': 14.18.33
       acorn: 8.8.1
       acorn-walk: 8.2.0
       arg: 4.1.3
       create-require: 1.1.1
       diff: 4.0.2
       make-error: 1.3.6
-      typescript: 4.8.4
+      typescript: 4.9.3
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
     dev: true
