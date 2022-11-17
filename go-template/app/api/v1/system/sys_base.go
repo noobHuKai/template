@@ -32,5 +32,5 @@ func (b *BaseApi) Login(c *gin.Context) {
 	g.RDB.Set(ctx, token, userInter.ID, g.TimeExpireToken)
 	// response
 	res := systemRes.LoginResponse{Token: token, ExpiresAt: g.TimeExpireToken.String()}
-	response.FailWithData(c, res)
+	response.OkWithData(c, res)
 }

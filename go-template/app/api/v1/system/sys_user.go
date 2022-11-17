@@ -4,6 +4,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/noobHuKai/app/g"
 	"github.com/noobHuKai/app/model/common/response"
+	systemRes "github.com/noobHuKai/app/model/system/response"
+
 	"strconv"
 )
 
@@ -27,5 +29,14 @@ func (u *UserApi) GetUserInfo(c *gin.Context) {
 		response.FailWithMsg(c, err.Error())
 		return
 	}
-	response.OkWithData(c, userInter)
+	res := systemRes.UserBasicInfoResponse{
+		UserId:   strconv.Itoa(int(userInter.ID)),
+		UserName: userInter.Username,
+		UserRole: userInter.Role,
+	}
+	response.OkWithData(c, res)
+}
+
+func (u *UserApi) GetUserRoutes(c *gin.Context) {
+	response.OkWithData(c, g.WebRouter)
 }
