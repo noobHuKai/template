@@ -16,7 +16,7 @@ func (r RouterGroup) InitSystemRouter(router *gin.RouterGroup) {
 		r.InitBaseRouter(baseRouter)
 	}
 
-	userRouter := router.Group("users")
+	userRouter := router.Group("user")
 	userRouter.Use(middleware.TokenAuthorizeMiddleware())
 	{
 		r.InitUserRouter(userRouter)

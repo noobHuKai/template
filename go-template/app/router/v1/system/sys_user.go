@@ -10,5 +10,5 @@ type UserRouter struct {
 
 func (u *UserRouter) InitUserRouter(router *gin.RouterGroup) {
 	userApi := v1.ApiGroupApp.SystemApiGroup.UserApi
-	router.GET(":id", userApi.GetUserInfo)
+	router.GET("getUserInfo", userApi.GetUserInfo)
 }

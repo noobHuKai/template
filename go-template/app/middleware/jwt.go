@@ -11,12 +11,12 @@ func JWTMiddleware() gin.HandlerFunc {
 		// get token
 		token := c.Request.Header.Get("Authorization")
 		if token == "" {
-			response.AuthorizedFailWithMsg(c, "Not Found Token")
+			response.FailUnauthorized(c, "Not Found Token")
 			return
 		}
 		claims, err := utils.ParseToken(token)
 		if err != nil {
-			response.AuthorizedFailWithMsg(c, err.Error())
+			response.FailUnauthorized(c, err.Error())
 			return
 		}
 		c.Set("claims", claims)
