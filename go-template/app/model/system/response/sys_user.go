@@ -2,6 +2,11 @@ package response
 
 type LoginResponse struct {
 	Token     string `json:"token"`
-	Uid       string `json:"uid"`
 	ExpiresAt string `json:"expires_at"`
+}
+
+type UserBasicInfoResponse struct {
+	UserId   string `json:"userId"`
+	UserName string `json:"userName"`
+	UserRole string `json:"userRole"`
 }

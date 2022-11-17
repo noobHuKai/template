@@ -22,3 +22,17 @@ func initConfig() {
 
 	g.JWTSecret = []byte(g.Cfg.Server.Secret)
 }
+
+func initWebRoutes()  {
+	viper.SetConfigName("routes")
+	viper.SetConfigType("json")
+	viper.AddConfigPath("./config/")
+	err := viper.ReadInConfig()
+	if err != nil {
+		log.Fatalf("fatal error router file: %w", err)
+	}
+	err = viper.Unmarshal(&g.WebRouter)
+	if err != nil {
+		log.Fatalf("unable to decode into struct, %v", err)
+	}
+}

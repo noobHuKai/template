@@ -8,7 +8,6 @@ import (
 	systemRes "github.com/noobHuKai/app/model/system/response"
 	"github.com/noobHuKai/app/utils"
 	uuid "github.com/satori/go.uuid"
-	"strconv"
 )
 
 type BaseApi struct{}
@@ -18,13 +17,13 @@ func (b *BaseApi) Login(c *gin.Context) {
 	if err := c.BindJSON(&req); err != nil {
 		errMsg := "Error Request Content"
 		g.Logger.Error(errMsg)
-		response.CreateFailUnprocessableEntityWithMsg(c, errMsg)
+		response.FailFormatError(c, errMsg)
 		return
 	}
 	userInter, err := userService.Login(req.Username, req.Password)
 	if err != nil {
 		g.Logger.Error(err.Error())
-		response.CreateFailBadRequestWithMsg(c, err.Error())
+		response.FailWithMsg(c, err.Error())
 		return
 	}
 	// generate token
@@ -32,6 +31,6 @@ func (b *BaseApi) Login(c *gin.Context) {
 	// set redis
 	g.RDB.Set(ctx, token, userInter.ID, g.TimeExpireToken)
 	// response
-	res := systemRes.LoginResponse{Token: token, Uid: strconv.Itoa(int(userInter.ID)), ExpiresAt: g.TimeExpireToken.String()}
-	response.CreatedOkWithData(c, res)
+	res := systemRes.LoginResponse{Token: token, ExpiresAt: g.TimeExpireToken.String()}
+	response.OkWithData(c, res)
 }

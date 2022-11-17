@@ -25,3 +25,16 @@ func (userService *UserService) Login(username, password string) (userInter *sys
 	}
 	return &user, err
 }
+
+func (userService *UserService) GetUserInfo(uid uint64) (userInter *system.SysUser, err error) {
+	var user system.SysUser
+
+	err = g.DB.First(&user, uid).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, errors.New("not found user")
+		}
+		return nil, err
+	}
+	return &user, err
+}

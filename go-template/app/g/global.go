@@ -13,4 +13,5 @@ var (
 	JWTSecret []byte
 	DB        *gorm.DB
 	RDB       *redis.Client
+	WebRouter map[string]interface{}
 )
