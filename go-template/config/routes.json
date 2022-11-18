@@ -25,6 +25,16 @@
             "requiresAuth": true,
             "icon": "icon-park-outline:workbench"
           }
+        },
+        {
+          "name": "dashboard_monitor",
+          "path": "/dashboard/monitor",
+          "component": "self",
+          "meta": {
+            "title": "系统监控  ",
+            "requiresAuth": true,
+            "icon": "icon-park-outline:workbench"
+          }
         }
       ],
       "meta": {
