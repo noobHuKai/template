@@ -8,6 +8,7 @@ import { MD5Encrypt } from '@/utils/crypto';
 import { useTabStore } from '../tab';
 import { useRouteStore } from '../route';
 import { getToken, getUserInfo, clearAuthStorage } from './helpers';
+import { router } from '~/src/router';
 
 interface AuthState {
   /** 用户信息 */
@@ -33,7 +34,7 @@ export const useAuthStore = defineStore('auth-store', {
   actions: {
     /** 重置auth状态 */
     /** 不是双 token ，是 redis+token */
-    resetAuthStore() {
+    resetAuthStore(isRefresh :boolean=false) {
       const { toLogin } = useRouterPush(false);
       const { resetTabStore } = useTabStore();
       const { resetRouteStore } = useRouteStore();
@@ -44,7 +45,10 @@ export const useAuthStore = defineStore('auth-store', {
 
       resetTabStore();
       resetRouteStore();
-
+      if (isRefresh){
+        // 刷新页面，不然不会加载
+        router.go(0);
+      }
       // if (route.meta.requiresAuth) {
       toLogin();
       // }

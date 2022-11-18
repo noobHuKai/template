@@ -68,7 +68,7 @@
     }
   },
   "tab": {
-    "visible": true,
+    "visible": false,
     "height": 44,
     "mode": "chrome",
     "modeList": [

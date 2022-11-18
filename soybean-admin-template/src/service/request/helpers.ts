@@ -22,6 +22,6 @@ export async function handleRefreshToken(_: AxiosRequestConfig) {
   //   return config;
   // }
 
-  resetAuthStore();
+  resetAuthStore(true);
   return null;
 }
