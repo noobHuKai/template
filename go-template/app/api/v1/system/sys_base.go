@@ -1,36 +1,53 @@
 package system
 
 import (
+	"bytes"
 	"github.com/gin-gonic/gin"
+	"github.com/gorilla/websocket"
 	"github.com/noobHuKai/app/g"
 	"github.com/noobHuKai/app/model/common/response"
-	systemReq "github.com/noobHuKai/app/model/system/request"
-	systemRes "github.com/noobHuKai/app/model/system/response"
-	"github.com/noobHuKai/app/utils"
-	uuid "github.com/satori/go.uuid"
+)
+
+var (
+	ExitMsg = []byte("exit")
 )
 
 type BaseApi struct{}
 
-func (b *BaseApi) Login(c *gin.Context) {
-	var req systemReq.LoginReq
-	if err := c.BindJSON(&req); err != nil {
-		errMsg := "Error Request Content"
-		g.Logger.Error(errMsg)
-		response.FailFormatError(c, errMsg)
-		return
-	}
-	userInter, err := userService.Login(req.Username, req.Password)
+func (b *BaseApi) GetSysBasicInfo(c *gin.Context) {
+	basicInfo := baseService.GetBasicInfo()
+
+	response.OkWithData(c, basicInfo)
+}
+
+func (b *BaseApi) GetSysMonitorInfo(ctx *gin.Context) {
+	//升级get请求为webSocket协议
+	ws, err := g.WSUpGrader.Upgrade(ctx.Writer, ctx.Request, nil)
 	if err != nil {
 		g.Logger.Error(err.Error())
-		response.FailWithMsg(c, err.Error())
 		return
 	}
-	// generate token
-	token := utils.SHA256Encrypt(uuid.NewV4().Bytes())
-	// set redis
-	g.RDB.Set(ctx, token, userInter.ID, g.TimeExpireToken)
-	// response
-	res := systemRes.LoginResponse{Token: token, ExpiresAt: g.TimeExpireToken.String()}
-	response.OkWithData(c, res)
+	defer ws.Close()
+	for {
+		_, msg, err := ws.ReadMessage()
+		if err != nil {
+			g.Logger.Error(err.Error())
+			break
+		}
+		if bytes.Compare(ExitMsg, msg) == 0 {
+			break
+		}
+
+		monitorInfo := baseService.GetMonitorInfo()
+		byteData, err := monitorInfo.Bytes()
+		if err != nil {
+			g.Logger.Error(err.Error())
+			continue
+		}
+
+		err = ws.WriteMessage(websocket.TextMessage, byteData)
+		if err != nil {
+			break
+		}
+	}
 }

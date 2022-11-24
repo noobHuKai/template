@@ -15,7 +15,7 @@ export function fetchSmsCode(phone: string) {
  * @param password - 密码
  */
 export function fetchLogin(userName: string, password: string) {
-  return request.post<ApiAuth.Token>('/base/login', { userName, password });
+  return request.post<ApiAuth.Token>('/login', { userName, password });
 }
 
 /** 获取用户信息 */

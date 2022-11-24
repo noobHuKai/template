@@ -1,4 +1,4 @@
-// import { unref } from 'vue';
+import { nextTick } from 'vue';
 import { defineStore } from 'pinia';
 // import { router } from '@/router';
 import { fetchLogin, fetchUserInfo } from '@/service';
@@ -8,7 +8,6 @@ import { MD5Encrypt } from '@/utils/crypto';
 import { useTabStore } from '../tab';
 import { useRouteStore } from '../route';
 import { getToken, getUserInfo, clearAuthStorage } from './helpers';
-import { router } from '~/src/router';
 
 interface AuthState {
   /** 用户信息 */
@@ -34,44 +33,45 @@ export const useAuthStore = defineStore('auth-store', {
   actions: {
     /** 重置auth状态 */
     /** 不是双 token ，是 redis+token */
-    resetAuthStore(isRefresh :boolean=false) {
+    resetAuthStore() {
       const { toLogin } = useRouterPush(false);
       const { resetTabStore } = useTabStore();
       const { resetRouteStore } = useRouteStore();
-      // const route = unref(router.currentRoute);
 
       clearAuthStorage();
       this.$reset();
 
-      resetTabStore();
-      resetRouteStore();
-      if (isRefresh){
-        // 刷新页面，不然不会加载
-        router.go(0);
-      }
-      // if (route.meta.requiresAuth) {
       toLogin();
-      // }
+
+      nextTick(() => {
+        resetTabStore();
+        resetRouteStore();
+      });
     },
     /**
      * 处理登录后成功或失败的逻辑
      * @param backendToken - 返回的token
      */
     async handleActionAfterLogin(backendToken: ApiAuth.Token) {
+      const route = useRouteStore();
       const { toLoginRedirect } = useRouterPush(false);
 
       const loginSuccess = await this.loginByToken(backendToken);
 
       if (loginSuccess) {
+        await route.initAuthRoute();
+
         // 跳转登录后的地址
         toLoginRedirect();
 
         // 登录成功弹出欢迎提示
-        window.$notification?.success({
-          title: '登录成功!',
-          content: `欢迎回来，${this.userInfo.userName}!`,
-          duration: 3000
-        });
+        if (route.isInitAuthRoute) {
+          window.$notification?.success({
+            title: '登录成功!',
+            content: `欢迎回来，${this.userInfo.userName}!`,
+            duration: 3000
+          });
+        }
 
         return;
       }

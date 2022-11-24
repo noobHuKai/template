@@ -11,5 +11,6 @@ type BaseRouter struct {
 func (b *BaseRouter) InitBaseRouter(router *gin.RouterGroup) {
 	baseApi := v1.ApiGroupApp.SystemApiGroup.BaseApi
 
-	router.POST("login", baseApi.Login)
+	router.GET("basic_info", baseApi.GetSysBasicInfo)
+	router.GET("monitor_info", baseApi.GetSysMonitorInfo)
 }

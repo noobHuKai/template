@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import {  ref } from 'vue';
+import { ref } from 'vue';
 import type { Ref } from 'vue';
 import { type ECOption, useEcharts } from '@/composables';
 defineOptions({ name: 'DashboardMonitorhHeader' });
@@ -25,7 +25,7 @@ const pieOptions1 = ref<ECOption>({
       },
       detail: {
         valueAnimation: true,
-        formatter: '{value}'
+        formatter: '{value}%'
       },
       data: [
         {
@@ -37,9 +37,6 @@ const pieOptions1 = ref<ECOption>({
   ]
 }) as Ref<ECOption>;
 const { domRef: pieRef1 } = useEcharts(pieOptions1);
-
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
