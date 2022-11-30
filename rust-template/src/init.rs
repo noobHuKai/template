@@ -1,6 +1,6 @@
 use chrono::Local;
-use tracing::subscriber::SetGlobalDefaultError;
 use tracing::Level;
+use tracing::{instrument::WithSubscriber, subscriber::SetGlobalDefaultError};
 use tracing_appender::non_blocking::WorkerGuard;
 use tracing_subscriber::{
     fmt::{self, format::Writer, time::FormatTime},
@@ -8,7 +8,7 @@ use tracing_subscriber::{
     Registry,
 };
 
-pub fn init_tracing() -> Result<Vec<WorkerGuard>, SetGlobalDefaultError> {
+pub fn init_tracing() -> Result<(), SetGlobalDefaultError> {
     #[derive(Clone)]
     struct LocalTimer;
 
@@ -18,14 +18,12 @@ pub fn init_tracing() -> Result<Vec<WorkerGuard>, SetGlobalDefaultError> {
         }
     }
 
-    let mut guards = Vec::new();
-    let error_file_appender = tracing_appender::rolling::daily("logs/error", "error.log");
-    let info_file_appender = tracing_appender::rolling::daily("logs/info", "info.log");
+    let info_file_appender =
+        tracing_appender::rolling::daily("logs/info", "info.log").with_min_level(Level::WARN);
+    let error_file_appender =
+        tracing_appender::rolling::daily("logs/error", "error.log").with_max_level(Level::ERROR);
 
-    let (info_non_blocking, info_guard) = tracing_appender::non_blocking(info_file_appender);
-    let (error_non_blocking, error_guard) = tracing_appender::non_blocking(error_file_appender);
-    guards.push(error_guard);
-    guards.push(info_guard);
+    let all_files = info_file_appender.and(error_file_appender);
 
     let format = fmt::format()
         .with_line_number(true)
@@ -43,16 +41,10 @@ pub fn init_tracing() -> Result<Vec<WorkerGuard>, SetGlobalDefaultError> {
             fmt::Layer::new()
                 .event_format(format.clone())
                 .with_ansi(false)
-                .with_writer(info_non_blocking.with_min_level(Level::WARN)),
-        )
-        .with(
-            fmt::Layer::new()
-                .event_format(format)
-                .with_ansi(false)
-                .with_writer(error_non_blocking.with_max_level(Level::ERROR)),
+                .with_writer(all_files),
         );
 
     tracing::subscriber::set_global_default(subscriber)?;
 
-    Ok(guards)
+    Ok(())
 }
