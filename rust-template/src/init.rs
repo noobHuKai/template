@@ -29,7 +29,7 @@ pub fn init_tracing() -> Result<Vec<WorkerGuard>, SetGlobalDefaultError> {
 
     let format = fmt::format()
         .with_line_number(true)
-        .with_file(true)
+        .with_file(false)
         .with_target(false)
         .with_timer(LocalTimer);
 
